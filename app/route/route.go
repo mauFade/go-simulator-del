@@ -2,6 +2,7 @@ package route
 
 import (
 	"bufio"
+	"encoding/json"
 	"errors"
 	"os"
 	"strconv"
@@ -17,6 +18,13 @@ type Route struct {
 type Position struct {
 	Latitude  float64
 	Longitude float64
+}
+
+type PartialRoutePosition struct {
+	ID       string    `json:"routeId"`
+	ClientId string    `json:"clientId"`
+	Position []float64 `json:"position"`
+	Finished bool      `json:"finished"`
 }
 
 func (route *Route) LoadPositions() error {
@@ -56,4 +64,32 @@ func (route *Route) LoadPositions() error {
 	}
 
 	return nil
+}
+
+func (r *Route) ExportJsonPositions() ([]string, error) {
+	var route PartialRoutePosition
+	var result []string
+	total := len(r.Positions)
+
+	for key, value := range r.Positions {
+		route.ID = r.ID
+		route.ClientId = r.ClientID
+		route.Position = []float64{value.Latitude, value.Longitude}
+		route.Finished = false
+
+		if total-1 == key {
+			route.Finished = true
+		}
+
+		jsonRoute, err := json.Marshal(route)
+
+		if err != nil {
+			return nil, err
+		}
+
+		result = append(result, string(jsonRoute))
+
+	}
+
+	return result, nil
 }
