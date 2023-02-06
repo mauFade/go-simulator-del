@@ -1,3 +1,3 @@
 module github.com/mauFade/go-simulator-del
 
-go 1.19
+go 1.16
