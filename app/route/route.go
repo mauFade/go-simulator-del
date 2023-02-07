@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -32,9 +33,10 @@ func (route *Route) LoadPositions() error {
 		return errors.New("Missing route ID.")
 	}
 
-	file, err := os.Open("destinations/" + route.ID + ".txt")
+	file, err := os.Open("app/destinations/" + route.ID + ".txt")
 
 	if err != nil {
+		fmt.Println(err.Error())
 		return err
 	}
 
