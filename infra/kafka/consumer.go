@@ -30,7 +30,7 @@ func (k *KafkaConsumer) Consume() {
 		log.Fatalf(err.Error())
 	}
 
-	topics := []string{os.Getenv("KafkareadTopic")}
+	topics := []string{os.Getenv("KafkaReadTopic")}
 
 	consumer.SubscribeTopics(topics, nil)
 
