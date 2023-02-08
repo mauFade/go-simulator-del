@@ -6,6 +6,7 @@ import (
 
 	ckafka "github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/joho/godotenv"
+	kafka2 "github.com/mauFade/go-simulator-del/app/kafka"
 	"github.com/mauFade/go-simulator-del/infra/kafka"
 )
 
@@ -25,6 +26,7 @@ func main() {
 	go consumer.Consume()
 
 	for msg := range msgChan {
+		go kafka2.ProduceMessage(msg)
 		fmt.Println(string(msg.Value))
 	}
 
